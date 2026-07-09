@@ -3,7 +3,7 @@
 Avventura grafica point-and-click sviluppata in Java con Swing.
 
 ## Requisiti
-- Java 17 o superiore
+- Java 21 o superiore
 
 ## Come giocare
 ### Opzione 1:

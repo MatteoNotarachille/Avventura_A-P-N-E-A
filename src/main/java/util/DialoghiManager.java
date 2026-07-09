@@ -1,19 +1,19 @@
 package util;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 /*
 Carica e fornisce i testi di gioco (dialoghi, messaggi, notifiche) da un file esterno.
-testi sono salvati in dialoghi.txt nel formato CHIAVE=valore,
+I testi sono salvati in dialoghi.txt nel formato CHIAVE=valore,
 così possono essere modificati senza toccare il codice sorgente.
-
 @author DeepCoders
 */
-
 public class DialoghiManager {
-    
+
     // Mappa che associa ogni chiave al testo corrispondente
     private static HashMap<String, String> dialoghi = new HashMap<>();
 
@@ -22,11 +22,12 @@ public class DialoghiManager {
     Va chiamata una sola volta all'avvio, prima di usare get().
     */
     public static void carica() {
-        try (BufferedReader br = new BufferedReader(new FileReader("dialoghi.txt"))) {
+        try (InputStream is = DialoghiManager.class.getResourceAsStream("/dialoghi.txt");
+             BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+
             String riga;
             while ((riga = br.readLine()) != null) {
                 if (riga.contains("=")) {
-                    
                     // Divide solo sul primo "=" per supportare valori che contengono "="
                     String[] parti = riga.split("=", 2);
                     dialoghi.put(parti[0].trim(), parti[1].trim());
@@ -37,7 +38,6 @@ public class DialoghiManager {
         }
     }
 
-    
     /*
     Restituisce il testo associato alla chiave indicata.
     Converte il carattere di \n in un vero a capo.
